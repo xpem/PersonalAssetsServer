@@ -1,0 +1,18 @@
+npm init -y
+npm i typescript -D
+npm i express
+npm i @types/express -D
+npx tsc --init
+npm i ts-node-dev -D
+npm i ts-node -D
+npm i express-async-errors
+npm i cors
+npm i @types/cors -D
+
+>>for env vars
+
+npm i dotenv
+
+>>for upload images
+
+npm i connect-multiparty
