@@ -1,13 +1,13 @@
 export interface IItem {
   Id?: number | null;
-  Uid?: string | null;
+  Uid?: number | null;
   Name: string;
   TechnicalDescription?: string | null;
   AcquisitionDate: Date;
   PurchaseValue?: number | null;
   PurchaseStore?: string | null;
   ResaleValue?: number | null;
-  Status?: number | null;
+  Status?: number;
   Comment?: string | null;
   AcquisitionType: number;
   CreatedAt?: Date;

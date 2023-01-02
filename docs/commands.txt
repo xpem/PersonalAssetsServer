@@ -13,6 +13,13 @@ npm i @types/cors -D
 
 npm i dotenv
 
+>>later>>
 >>for upload images
 
 npm i connect-multiparty
+
+
+for jwt 
+
+npm i jsonwebtoken
+npm i @types/jsonwebtoken -D
