@@ -3,17 +3,14 @@ import { verify } from "jsonwebtoken";
 import { JwtSecret } from "../keys";
 
 interface Payload {
-    sub: string;
+  sub: string;
 }
 
-export function Authenticate(
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
+export function Authenticate(req: Request, res: Response, next: NextFunction) {
   const authToken = req.headers.authorization;
 
   if (!authToken) {
+    console.log("Auth token vazio");
     return res.status(401).end();
   }
 
@@ -21,14 +18,12 @@ export function Authenticate(
 
   try {
     const { sub } = verify(token, JwtSecret) as Payload;
-
-    console.log(sub)
     //é necessário declarar o tipo user_id no request; no @types express
     req.uid = Number(sub);
 
     return next();
-    
   } catch (err) {
+    console.log(err);
     res.status(401).end();
   }
 }

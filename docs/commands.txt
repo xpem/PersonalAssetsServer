@@ -19,7 +19,8 @@ npm i dotenv
 npm i connect-multiparty
 
 
-for jwt 
+for jwt
 
-npm i jsonwebtoken
+>>no kinghost dá problema a nova versão do jsonwebtoken
+npm i npm i jsonwebtoken@8.5.1
 npm i @types/jsonwebtoken -D

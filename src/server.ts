@@ -32,6 +32,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     .json({ status: "error", message: "Internal server error" });
 });
 
-app.listen(process.env.PORT_BOOKSHELFSERVER_SERVER || 3001, () =>
+app.listen(process.env.PORT_PERSONALASSETSSERVER_SERVER || 3001, () =>
   console.log(`Server onLine`)
 );

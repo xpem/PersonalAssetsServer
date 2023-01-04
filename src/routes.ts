@@ -26,6 +26,8 @@ router.get("/item/:id", Authenticate, new ItemController().readById);
 router.put("/item/:id", Authenticate, new ItemController().update);
 router.delete("/item/:id", Authenticate, new ItemController().delete);
 
+router.get("/imalive", (req, res) => res.json({ alive: "yes" }));
+
 //item status
 router.get("/itemstatus", Authenticate, new ItemStatusController().readAll);
 

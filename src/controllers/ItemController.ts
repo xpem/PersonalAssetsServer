@@ -130,6 +130,7 @@ export class ItemController {
       return res.status(409).json("Não existe Items para este usuário");
     }
   }
+  
   async ValidateItem(Item: IItem) {
     if (!Item.Name) {
       return false;
@@ -148,7 +149,6 @@ export class ItemController {
       const acquisitionType = await new AcquisitionTypeService().readById(
         Number(Item.AcquisitionType)
       );
-      console.log(acquisitionType);
 
       if (!acquisitionType) return false;
     }
