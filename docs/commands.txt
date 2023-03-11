@@ -24,3 +24,5 @@ for jwt
 >>no kinghost dá problema a nova versão do jsonwebtoken
 npm i npm i jsonwebtoken@8.5.1
 npm i @types/jsonwebtoken -D
+
+
