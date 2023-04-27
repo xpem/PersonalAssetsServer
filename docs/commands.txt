@@ -26,3 +26,7 @@ npm i npm i jsonwebtoken@8.5.1
 npm i @types/jsonwebtoken -D
 
 
+for local debug
+npm run dev
+
+
