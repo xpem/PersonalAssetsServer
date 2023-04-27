@@ -34,6 +34,8 @@ router.delete("/item/:id", Authenticate, itemController.delete);
 router.get("/category", Authenticate, new CategoryController().read);
 router.get("/category/:id", Authenticate, new CategoryController().readById);
 router.post("/category", Authenticate, new CategoryController().create);
+router.put("/category/:id", Authenticate, new CategoryController().update);
+router.delete("/category/:id", Authenticate, new CategoryController().delete);
 
 //sub categories
 var subCategoryController = new SubCategoryController();
