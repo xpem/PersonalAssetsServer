@@ -91,7 +91,7 @@ export class CategoryController {
         category.Uid as number
       );
 
-      if (categoryByName) {
+      if (categoryByName && categoryByName.Id != category.Id) {
         return res.status(409).json("Categoria já cadastrada com este nome");
       }
 
