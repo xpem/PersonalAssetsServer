@@ -111,13 +111,13 @@ export class CategoryController {
 
     const Uid = Number(req.uid);
     var categoryController = new CategoryController();
-    var errorMessage = categoryController.ValidadeDelete(Number(id), Uid);
+    var errorMessage = await categoryController.ValidadeDelete(Number(id), Uid);
 
     if (!errorMessage) {
       const service = new CategoryService();
       await service.delete(Number(id), Uid);
 
-      return res.status(200);
+      return res.status(200).json("Categoria excluída.");
     } else {
       return res.status(409).json(errorMessage);
     }
@@ -134,13 +134,12 @@ export class CategoryController {
     return null;
   }
   async ValidadeDelete(id: number, uid: number) {
-
     var categoryController = new CategoryController();
-    
-    //verify if this category exists in user
-    var errorMessage = categoryController.ValidateById(id, uid);
 
-    if (!errorMessage) {
+    //verify if this category exists in user
+    var errorMessage = await categoryController.ValidateById(id, uid);
+
+    if (errorMessage) {
       return errorMessage;
     }
 
@@ -149,7 +148,7 @@ export class CategoryController {
     var subcategories = await subcategoryService.readByCategoryId(uid, id);
 
     if (subcategories) {
-      return "Existem categorias cadastradas nesta categoria";
+      return "Existem Subcategorias cadastradas nesta categoria";
     }
 
     return null;
