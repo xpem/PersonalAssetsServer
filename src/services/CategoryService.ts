@@ -94,7 +94,7 @@ export class CategoryService {
         (err, res) => {
           if (err) reject(err);
           else
-            this.readById(res.insertId,category.Uid as number)
+            this.readById(res.insertId, category.Uid as number)
               .then((category) => resolve(category!))
               .catch(reject);
         }
@@ -123,6 +123,7 @@ export class CategoryService {
         [id, uid],
         (err, res) => {
           if (err) reject(err);
+          else resolve();
         }
       );
     });

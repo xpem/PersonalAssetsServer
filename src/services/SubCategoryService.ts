@@ -40,17 +40,21 @@ export class SubCategoryServive {
       );
     });
   }
-  readByCategoryId(uid: number,categoryId: number): Promise<ISubCategory[] | null> {
+  readByCategoryId(
+    uid: number,
+    categoryId: number
+  ): Promise<ISubCategory[] | null> {
     return new Promise((resolve, reject) => {
       Conn.query(
         "select c.id as c_id,c.name as c_name,c.color as c_color,c.system_default as c_system_default,sc.id as sc_id,sc.name as sc_name,sc.icon as sc_icon,c.system_default as sc_system_default from category c inner join sub_category sc on c.id = sc.category_id where ((sc.uid = ?) or (sc.uid is null and sc.system_default = 1)) and sc.category_id = ?",
-        [uid,categoryId],
+        [uid, categoryId],
         (err, res) => {
           if (err) reject(err);
           else {
             const rows = <RowDataPacket[]>res;
             const objList: ISubCategory[] = [];
-            if (rows) {
+
+            if (rows.length > 0) {
               rows.forEach((row) => {
                 if (row) {
                   const obj: ISubCategory = {
@@ -77,11 +81,11 @@ export class SubCategoryServive {
       );
     });
   }
-  readById(Id: number,uid: number): Promise<ISubCategory | null> {
+  readById(Id: number, uid: number): Promise<ISubCategory | null> {
     return new Promise((resolve, reject) => {
       Conn.query(
         "select c.id as c_id,c.name as c_name,c.color as c_color,c.system_default as c_system_default,sc.id as sc_id,sc.name as sc_name,sc.icon as sc_icon,c.system_default as sc_system_default from category c inner join sub_category sc on c.id = sc.category_id where ((sc.uid = ?) or (sc.uid is null and sc.system_default = 1)) and sc.id = ?",
-        [uid,Id],
+        [uid, Id],
         (err, res) => {
           if (err) reject(err);
           else {
@@ -114,11 +118,15 @@ export class SubCategoryServive {
       );
     });
   }
-  readByCategoryIdAndName(uid: number,categoryId: number,name: string): Promise<ISubCategory | null> {
+  readByCategoryIdAndName(
+    uid: number,
+    categoryId: number,
+    name: string
+  ): Promise<ISubCategory | null> {
     return new Promise((resolve, reject) => {
       Conn.query(
         "select c.id as c_id,c.name as c_name,c.color as c_color,c.system_default as c_system_default,sc.id as sc_id,sc.name as sc_name,sc.icon as sc_icon,c.system_default as sc_system_default from category c inner join sub_category sc on c.id = sc.category_id where ((sc.uid = ?) or (sc.uid is null and sc.system_default = 1)) and sc.category_id = ? and sc.name = ?",
-        [uid,categoryId,name],
+        [uid, categoryId, name],
         (err, res) => {
           if (err) reject(err);
           else {
@@ -155,11 +163,16 @@ export class SubCategoryServive {
     return new Promise((resolve, reject) => {
       Conn.query<OkPacket>(
         "insert into sub_category(name,icon,system_default,category_id,uid) values (?,?,0,?,?)",
-        [subCategory.Name, subCategory.Icon,subCategory.Category.Id, subCategory.Uid],
+        [
+          subCategory.Name,
+          subCategory.Icon,
+          subCategory.Category.Id,
+          subCategory.Uid,
+        ],
         (err, res) => {
           if (err) reject(err);
           else
-            this.readById(res.insertId,subCategory.Uid as number)
+            this.readById(res.insertId, subCategory.Uid as number)
               .then((x) => resolve(x!))
               .catch(reject);
         }
