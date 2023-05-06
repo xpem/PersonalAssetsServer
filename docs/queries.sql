@@ -22,7 +22,7 @@ insert into category(name,color, system_default,uid) values ('Casa','#bfc9ca',0,
 create table sub_category(
 id int primary key not null AUTO_INCREMENT,
 name varchar(50) not null,
-icon varchar(20) not null,
+icon_name varchar(100) not null,
 system_default tinyint(1) not NULL DEFAULT 0,
 category_id int not null,
 uid varchar(250),
@@ -31,18 +31,17 @@ updated_at datetime(3),
 CONSTRAINT `FK_sub_category_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
 )
 
+INSERT INTO sub_category(name,icon_name,system_default,category_id) VALUES ('Móveis','Car','1','1')--'Car'
+INSERT INTO sub_category(name,icon_name,system_default,category_id) VALUES ('Eletrodomésticos','Tv','1','1')--'Tv'
+INSERT INTO sub_category(name,icon_name,system_default,category_id) VALUES ('Computadores','Computer','1','1')--'Computer'
 
-INSERT INTO sub_category(name,icon,system_default,category_id) VALUES ('Móveis','\uf4b8','1','1')
-INSERT INTO sub_category(name,icon,system_default,category_id) VALUES ('Eletrodomésticos','\uf26c','1','1')
-INSERT INTO sub_category(name,icon,system_default,category_id) VALUES ('Computadores','\ue4e5','1','1')
+INSERT INTO sub_category(name,icon_name,system_default,category_id) VALUES ('Eletrônicos','Mobile','1','2')--'Mobile'
+INSERT INTO sub_category(name,icon_name,system_default,category_id) VALUES ('Calçados','ShoePrints','1','2')--'ShoePrints'
+INSERT INTO sub_category(name,icon_name,system_default,category_id) VALUES ('Roupas','Tshirt','1','2')--'Tshirt'
 
-INSERT INTO sub_category(name,icon,system_default,category_id) VALUES ('Eletrônicos','\uf10b','1','2')
-INSERT INTO sub_category(name,icon,system_default,category_id) VALUES ('Calçados','\uf54b','1','2')
-INSERT INTO sub_category(name,icon,system_default,category_id) VALUES ('Roupas','\uf553','1','2')
-
-INSERT INTO sub_category(name,icon,system_default,category_id) VALUES ('Utensílios','\uf553','1','3')
-INSERT INTO sub_category(name,icon,system_default,category_id) VALUES ('Peças internas','\uf0ad','1','3')
-INSERT INTO sub_category(name,icon,system_default,category_id) VALUES ('Peças externas','\uf1b9','1','3')
+INSERT INTO sub_category(name,icon_name,system_default,category_id) VALUES ('Utensílios','AirFreshener','1','3')--'AirFreshener'
+INSERT INTO sub_category(name,icon_name,system_default,category_id) VALUES ('Peças internas','Wrench','1','3')--'Wrench'
+INSERT INTO sub_category(name,icon_name,system_default,category_id) VALUES ('Peças externas','Car','1','3')--'Car'
 
 create table item_status(
 id int primary key not null AUTO_INCREMENT, name varchar(50) not null);

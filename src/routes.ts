@@ -39,7 +39,8 @@ router.delete("/category/:id", Authenticate, new CategoryController().delete);
 
 //sub categories
 var subCategoryController = new SubCategoryController();
-router.get("/subcategory", Authenticate, subCategoryController.read);
+// router.get("/subcategory", Authenticate, subCategoryController.read);
+router.get("/subcategory/:id", Authenticate, subCategoryController.readById);
 router.get("/subcategory/category/:id", Authenticate, subCategoryController.readByCategoryId);
 router.post("/subcategory", Authenticate, subCategoryController.create);
 

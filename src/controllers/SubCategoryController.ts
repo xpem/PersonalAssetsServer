@@ -1,19 +1,24 @@
 import { Request, Response } from "express";
-import { ICategory } from "../models/Category";
 import { ISubCategory } from "../models/SubCategory";
 import { SubCategoryServive } from "../services/SubCategoryService";
-import { CategoryController } from "./CategoryController";
 
 export class SubCategoryController {
-  async read(req: Request, res: Response) {
+  // async read(req: Request, res: Response) {
+  //   var uid = Number(req.uid);
+  //   const itemList = await new SubCategoryServive().read(uid);
+  //   return res.json(itemList);
+  // }
+  async readById(req: Request, res: Response) {
+    if (!req.params.id) throw new Error("Defina o id");
+
+    const Id = req.params.id as string;
     var uid = Number(req.uid);
-    const itemList = await new SubCategoryServive().read(uid);
-    return res.json(itemList);
+
+    const item = await new SubCategoryServive().readById(uid, Number(Id));
+    return res.json(item);
   }
   async readByCategoryId(req: Request, res: Response) {
-    if (!req.params.id) {
-      throw new Error("Defina o id");
-    }
+    if (!req.params.id) throw new Error("Defina o id");
 
     const uid = Number(req.uid);
     const categoryId = req.params.id as string;
@@ -22,27 +27,28 @@ export class SubCategoryController {
       uid,
       Number(categoryId)
     );
-    return res.json(itemList);
+
+    if (itemList) return res.json(itemList);
+    else return res.status(204).json(null);
   }
   async create(req: Request, res: Response) {
-    const { Name, Icon, Category } = req.body;
-
-    console.log(Category);
+    const { Name, IconName, Category } = req.body;
 
     const subCategory = {
       Name: Name ?? null,
-      Icon: Icon ?? null,
+      IconName: IconName ?? null,
       Category: { Id: Category.Id ?? null },
     } as ISubCategory;
 
+    console.log(subCategory);
     //default color
-    if (!subCategory.Icon) {
-      subCategory.Icon = "uf02b";
+    if (!subCategory.IconName) {
+      subCategory.IconName = "Tag";
     }
 
     subCategory.Uid = Number(req.uid);
 
-    if (await new SubCategoryController().Validate(subCategory)) {
+    if (await new SubCategoryController().ValidateParams(subCategory)) {
       const service = new SubCategoryServive();
 
       //
@@ -66,7 +72,7 @@ export class SubCategoryController {
     }
   }
 
-  async Validate(subCategory: ISubCategory) {
+  async ValidateParams(subCategory: ISubCategory) {
     if (!subCategory.Name) return false;
     if (!subCategory.Category.Id) return false;
     return true;

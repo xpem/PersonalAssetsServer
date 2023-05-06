@@ -4,7 +4,7 @@ export interface ISubCategory {
   Id?: number | null;
   Uid?: number | null;
   Name: string;
-  Icon: string;
+  IconName: string;
   SystemDefault: number;
   Category: ICategory;
   // CreatedAt: Date;
