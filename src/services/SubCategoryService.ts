@@ -79,35 +79,29 @@ export class SubCategoryServive {
       );
     });
   }
-  readById(Id: number, uid: number): Promise<ISubCategory | null> {
+  readById(id: number, uid: number): Promise<ISubCategory | null> {
     return new Promise((resolve, reject) => {
       Conn.query(
         "select c.id as c_id,c.name as c_name,c.color as c_color,c.system_default as c_system_default,sc.id as sc_id,sc.name as sc_name,sc.icon_name as sc_icon,c.system_default as sc_system_default from category c inner join sub_category sc on c.id = sc.category_id where ((sc.uid = ?) or (sc.uid is null and sc.system_default = 1)) and sc.id = ?",
-        [uid, Id],
+        [uid, id],
         (err, res) => {
           if (err) reject(err);
           else {
-            const rows = <RowDataPacket[]>res;
-            const objList: ISubCategory[] = [];
-            if (rows) {
-              rows.forEach((row) => {
-                if (row) {
-                  const obj: ISubCategory = {
-                    Id: row.sc_id,
-                    IconName: row.sc_icon,
-                    Name: row.sc_name,
-                    SystemDefault: row.sc_system_default,
-                    Category: {
-                      Id: row.c_id,
-                      Name: row.c_name,
-                      Color: row.c_color,
-                      SystemDefault: row.c_system_default,
-                    },
-                  };
-                  objList.push(obj);
-                }
-              });
-              resolve(objList[0]);
+            const row = (<RowDataPacket>res)[0];
+            if (row) {
+              const obj: ISubCategory = {
+                Id: row.sc_id,
+                IconName: row.sc_icon,
+                Name: row.sc_name,
+                SystemDefault: row.sc_system_default,
+                Category: {
+                  Id: row.c_id,
+                  Name: row.c_name,
+                  Color: row.c_color,
+                  SystemDefault: row.c_system_default,
+                },
+              };
+              resolve(obj);
             } else {
               resolve(null);
             }
@@ -128,27 +122,21 @@ export class SubCategoryServive {
         (err, res) => {
           if (err) reject(err);
           else {
-            const rows = <RowDataPacket[]>res;
-            const objList: ISubCategory[] = [];
-            if (rows) {
-              rows.forEach((row) => {
-                if (row) {
-                  const obj: ISubCategory = {
-                    Id: row.sc_id,
-                    IconName: row.sc_icon,
-                    Name: row.sc_name,
-                    SystemDefault: row.sc_system_default,
-                    Category: {
-                      Id: row.c_id,
-                      Name: row.c_name,
-                      Color: row.c_color,
-                      SystemDefault: row.c_system_default,
-                    },
-                  };
-                  objList.push(obj);
-                }
-              });
-              resolve(objList[0]);
+            const row = (<RowDataPacket>res)[0];
+            if (row) {
+              const obj: ISubCategory = {
+                Id: row.sc_id,
+                IconName: row.sc_icon,
+                Name: row.sc_name,
+                SystemDefault: row.sc_system_default,
+                Category: {
+                  Id: row.c_id,
+                  Name: row.c_name,
+                  Color: row.c_color,
+                  SystemDefault: row.c_system_default,
+                },
+              };
+              resolve(obj);
             } else {
               resolve(null);
             }
@@ -173,6 +161,33 @@ export class SubCategoryServive {
             this.readById(res.insertId, subCategory.Uid as number)
               .then((x) => resolve(x!))
               .catch(reject);
+        }
+      );
+    });
+  }
+  update(item: ISubCategory): Promise<ISubCategory> {
+    return new Promise((resolve, reject) => {
+      Conn.query<OkPacket>(
+        "update sub_category set name = ?,icon_name = ? where id = ? and uid = ?",
+        [item.Name, item.IconName, item.Id, item.Uid],
+        (err, res) => {
+          if (err) reject(err);
+          else
+            this.readById(item.Id!, item.Uid!)
+              .then((i) => resolve(i!))
+              .catch(reject);
+        }
+      );
+    });
+  }
+  delete(id: number, uid: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      Conn.query<OkPacket>(
+        "delete from sub_category where id = ? and uid = ?",
+        [id, uid],
+        (err, res) => {
+          if (err) reject(err);
+          else resolve();
         }
       );
     });

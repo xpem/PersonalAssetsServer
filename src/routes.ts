@@ -21,7 +21,6 @@ const router = Router();
 //   res.json((req as multipartyRequest).files.imga);
 // });
 
-
 //items
 var itemController = new ItemController();
 router.get("/item", Authenticate, itemController.readByUid);
@@ -31,18 +30,25 @@ router.put("/item/:id", Authenticate, itemController.update);
 router.delete("/item/:id", Authenticate, itemController.delete);
 
 //categories
-router.get("/category", Authenticate, new CategoryController().read);
-router.get("/category/:id", Authenticate, new CategoryController().readById);
-router.post("/category", Authenticate, new CategoryController().create);
-router.put("/category/:id", Authenticate, new CategoryController().update);
-router.delete("/category/:id", Authenticate, new CategoryController().delete);
+var categoryController = new CategoryController();
+router.get("/category", Authenticate, categoryController.read);
+router.get("/category/:id", Authenticate, categoryController.readById);
+router.post("/category", Authenticate, categoryController.create);
+router.put("/category/:id", Authenticate, categoryController.update);
+router.delete("/category/:id", Authenticate, categoryController.delete);
 
 //sub categories
 var subCategoryController = new SubCategoryController();
 // router.get("/subcategory", Authenticate, subCategoryController.read);
 router.get("/subcategory/:id", Authenticate, subCategoryController.readById);
-router.get("/subcategory/category/:id", Authenticate, subCategoryController.readByCategoryId);
+router.get(
+  "/subcategory/category/:id",
+  Authenticate,
+  subCategoryController.readByCategoryId
+);
 router.post("/subcategory", Authenticate, subCategoryController.create);
+router.put("/subcategory/:id", Authenticate, subCategoryController.update);
+router.delete("/subcategory/:id", Authenticate, subCategoryController.delete);
 
 //item status
 router.get("/itemstatus", Authenticate, new ItemStatusController().readAll);
