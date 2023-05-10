@@ -15,7 +15,10 @@ export class SubCategoryController {
     const Id = req.params.id as string;
     var uid = Number(req.uid);
 
-    const item = await service.readById(uid, Number(Id));
+console.log(Id)
+console.log(uid)
+
+    const item = await service.readById(Number(Id),uid);
     return res.json(item);
   }
   async readByCategoryId(req: Request, res: Response) {
