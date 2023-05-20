@@ -89,7 +89,7 @@ export class CategoryService {
   create(category: ICategory): Promise<ICategory> {
     return new Promise((resolve, reject) => {
       Conn.query<OkPacket>(
-        "insert into category(name,color, system_default,uid) values (?,?,0,?)",
+        "insert into category(name,color,system_default,uid,updated_at) values (?,?,0,?,now())",
         [category.Name, category.Color, category.Uid],
         (err, res) => {
           if (err) reject(err);
@@ -104,7 +104,7 @@ export class CategoryService {
   update(item: ICategory): Promise<ICategory> {
     return new Promise((resolve, reject) => {
       Conn.query<OkPacket>(
-        "update category set name = ?,color = ? where id = ? and uid = ?",
+        "update category set name = ?,color = ?, updated_at = now() where id = ? and uid = ?",
         [item.Name, item.Color, item.Id, item.Uid],
         (err, res) => {
           if (err) reject(err);

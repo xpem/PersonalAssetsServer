@@ -43,16 +43,24 @@ INSERT INTO sub_category(name,icon_name,system_default,category_id) VALUES ('Ute
 INSERT INTO sub_category(name,icon_name,system_default,category_id) VALUES ('Peças internas','Wrench','1','3')--'Wrench'
 INSERT INTO sub_category(name,icon_name,system_default,category_id) VALUES ('Peças externas','Car','1','3')--'Car'
 
-create table item_status(
-id int primary key not null AUTO_INCREMENT, name varchar(50) not null);
+create table item_situation(
+id int primary key not null AUTO_INCREMENT,
+name varchar(50) not null,
+sequence int unique not NULL,
+system_default tinyint(1) not NULL DEFAULT 0,
+uid varchar(250),
+created_at datetime(3) NOT NULL DEFAULT current_timestamp(3),
+updated_at datetime(3)
+);
 
-insert into item_status(name) values ('Guardado');
-insert into item_status(name) values ('Em uso');
-insert into item_status(name) values ('Emprestado');
-insert into item_status(name) values ('Defeito');
-insert into item_status(name) values ('Revendido');
-insert into item_status(name) values ('Doado');
-insert into item_status(name) values ('Dispensado');
+insert into item_situation(name,sequence,system_default) values ('Em uso',1,1);
+insert into item_situation(name,sequence,system_default) values ('Guardado',2,1);
+insert into item_situation(name,sequence,system_default) values ('Dispensado',5,1);
+insert into item_situation(name,sequence,system_default) values ('Defeito',3,1);
+insert into item_situation(name,sequence,system_default) values ('Revendido',4,1);
+insert into item_situation(name,sequence,system_default) values ('Emprestado',6,1);
+insert into item_situation(name,sequence,system_default) values ('Doado',7,1);
+
 
 create table acquisition_type(
 id int primary key not null AUTO_INCREMENT, name varchar(50) not null);
@@ -63,7 +71,7 @@ insert into acquisition_type(name) values ('Doação');
 insert into acquisition_type(name) values ('Presente');
 
 CREATE TABLE
-  `itens` (
+  `item` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `uid` varchar(250) NOT NULL,
     `name` varchar(200) NOT NULL,
@@ -72,7 +80,7 @@ CREATE TABLE
     `purchase_value` decimal(10, 2) NOT NULL,
     `purchase_store` varchar(200) DEFAULT NULL,
     `resale_value` decimal(10, 2) DEFAULT NULL,
-    `status_id` int(11) NOT NULL,
+    `situation_id` int(11) NOT NULL,
     `comment` varchar(350) DEFAULT NULL,
     `Image_1` varchar(500) DEFAULT NULL,
     `Image_2` varchar(500) DEFAULT NULL,
@@ -81,8 +89,8 @@ CREATE TABLE
     `updated_at` datetime(3) NOT NULL DEFAULT current_timestamp(3),
     `acquisition_type_id` int(11) NOT NULL,
     PRIMARY KEY (`id`),
-    CONSTRAINT `FK_itens_item_status` FOREIGN KEY (`status_id`) REFERENCES `item_status` (`id`),
-    CONSTRAINT `FK_itens_acquisition_type` FOREIGN KEY (`acquisition_type_id`) REFERENCES `acquisition_type` (`id`)
+    CONSTRAINT `FK_items_item_situation` FOREIGN KEY (`situation_id`) REFERENCES `item_situation` (`id`),
+    CONSTRAINT `FK_items_acquisition_type` FOREIGN KEY (`acquisition_type_id`) REFERENCES `acquisition_type` (`id`)
   ) ENGINE = InnoDB AUTO_INCREMENT = 2 DEFAULT CHARSET = latin1
 
 

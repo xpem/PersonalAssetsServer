@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { AcquisitionTypeController } from "./controllers/AcquisitionTypeController";
 import { CategoryController } from "./controllers/CategoryController";
 import { ItemController } from "./controllers/ItemController";
-import { ItemStatusController } from "./controllers/ItemStatusController";
+import { ItemSituationController } from "./controllers/ItemSituationController";
 import { SubCategoryController } from "./controllers/SubCategoryController";
 import { Authenticate } from "./middleware/Authenticate";
 
@@ -50,8 +50,8 @@ router.post("/subcategory", Authenticate, subCategoryController.create);
 router.put("/subcategory/:id", Authenticate, subCategoryController.update);
 router.delete("/subcategory/:id", Authenticate, subCategoryController.delete);
 
-//item status
-router.get("/itemstatus", Authenticate, new ItemStatusController().readAll);
+//item situation
+router.get("/itemsituation", Authenticate, new ItemSituationController().readAll);
 
 //acquisition types
 router.get(

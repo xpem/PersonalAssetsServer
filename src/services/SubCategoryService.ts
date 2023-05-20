@@ -148,7 +148,7 @@ export class SubCategoryServive {
   create(subCategory: ISubCategory): Promise<ISubCategory> {
     return new Promise((resolve, reject) => {
       Conn.query<OkPacket>(
-        "insert into sub_category(name,icon_name,system_default,category_id,uid) values (?,?,0,?,?)",
+        "insert into sub_category(name,icon_name,system_default,category_id,uid,updated_at) values (?,?,0,?,?,now())",
         [
           subCategory.Name,
           subCategory.IconName,
@@ -168,7 +168,7 @@ export class SubCategoryServive {
   update(item: ISubCategory): Promise<ISubCategory> {
     return new Promise((resolve, reject) => {
       Conn.query<OkPacket>(
-        "update sub_category set name = ?,icon_name = ? where id = ? and uid = ?",
+        "update sub_category set name = ?,icon_name = ?,updated_at = now() where id = ? and uid = ?",
         [item.Name, item.IconName, item.Id, item.Uid],
         (err, res) => {
           if (err) reject(err);

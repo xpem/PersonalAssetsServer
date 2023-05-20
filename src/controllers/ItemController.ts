@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { IItem } from "../models/Item";
 import { AcquisitionTypeService } from "../services/AcquisitionTypeService";
 import { ItemService } from "../services/ItemService";
-import { ItemStatusService } from "../services/ItemStatusService";
+import { ItemSituationService } from "../services/ItemSituationService";
 
 export class ItemController {
   async create(req: Request, res: Response) {
@@ -129,8 +129,7 @@ export class ItemController {
     } else {
       return res.status(409).json("Não existe Items para este usuário");
     }
-  }
-  
+  }  
   async ValidateItem(Item: IItem) {
     if (!Item.Name) {
       return false;
@@ -140,7 +139,7 @@ export class ItemController {
     }
 
     if (!Item.Status) {
-      const itemstatus = await new ItemStatusService().readById(
+      const itemstatus = await new ItemSituationService().readById(
         Number(Item.Status)
       );
       if (!itemstatus) return false;
