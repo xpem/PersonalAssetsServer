@@ -2,6 +2,7 @@ import { Conn } from "../keys";
 import { ICategory } from "../models/Category";
 import { RowDataPacket } from "mysql2";
 import { OkPacket } from "mysql2";
+import { SubCategoryServive } from "./SubCategoryService";
 
 export class CategoryService {
   read(uid: number): Promise<ICategory[] | null> {
@@ -22,9 +23,107 @@ export class CategoryService {
                     Name: row.name,
                     Color: row.color,
                     SystemDefault: row.system_default,
+                    SubCategories: [],
                   };
 
                   objList.push(obj);
+                }
+              });
+              resolve(objList);
+            } else {
+              resolve(null);
+            }
+          }
+        }
+      );
+    });
+  }
+  readWithSubCategories(uid: number): Promise<ICategory[] | null> {
+    return new Promise((resolve, reject) => {
+      console.log("teste");
+      console.log(uid);
+      Conn.query(
+        "select c.id as c_id,c.name as c_name,c.color as c_color,c.system_default as c_system_default,sc.id as sc_id,sc.name as sc_name,sc.icon_name as sc_icon,c.system_default as sc_system_default from category c left join sub_category sc on c.id = sc.category_id where ((c.uid = ?) or (c.uid is null and c.system_default = 1)) order by c.id",
+        [uid],
+        (err, res, fields) => {
+          if (err) reject(err);
+          else {
+            const rows = <RowDataPacket[]>res;
+            const objList: ICategory[] = [];
+            if (rows) {
+              var counter = 0;
+              rows.forEach((row) => {
+                if (row) {
+                  var obj: ICategory;
+                  console.log("counter " + counter);
+
+                  if (counter == 0) {
+                    obj = {
+                      Id: row.c_id,
+                      Name: row.c_name,
+                      Color: row.c_color,
+                      SystemDefault: row.c_system_default,
+                      SubCategories: [],
+                    };
+                    objList.push(obj);
+                  } else {
+                    console.log("Obj");
+                    console.log(objList);
+                    if (
+                      counter > 0 &&
+                      objList.length > 0 &&
+                      row.sc_id &&
+                      objList[objList.length - 1].Id == row.c_id
+                    ) {
+                      if (row.sc_id) {
+                        console.log("vai add a subcategoria");
+                        objList[objList.length - 1].SubCategories?.push({
+                          Id: row.sc_id,
+                          IconName: row.sc_icon,
+                          Name: row.sc_name,
+                          SystemDefault: row.sc_system_default,
+                          CategoryId: row.c_id,
+                        });
+                      }
+                    } else {
+                      if (row.sc_id) {
+                        obj = {
+                          Id: row.c_id,
+                          Name: row.c_name,
+                          Color: row.c_color,
+                          SystemDefault: row.c_system_default,
+                          SubCategories: [],
+                        };
+                        objList.push(obj);
+                      } else {
+                        obj = {
+                          Id: row.c_id,
+                          Name: row.c_name,
+                          Color: row.c_color,
+                          SystemDefault: row.c_system_default,
+                          SubCategories: [],
+                        };
+                        if (row.sc_id) {
+                          obj.SubCategories?.push({
+                            Id: row.sc_id,
+                            IconName: row.sc_icon,
+                            Name: row.sc_name,
+                            SystemDefault: row.sc_system_default,
+                            CategoryId: row.c_id,
+                            // Category: {
+                            //   Id: row.c_id,
+                            //   Name: row.c_name,
+                            //   Color: row.c_color,
+                            //   SystemDefault: row.c_system_default,
+                            //   SubCategories: null,
+                            // },
+                          });
+                        }
+                        objList.push(obj);
+                      }
+                    }
+                  }
+                  counter++;
                 }
               });
               resolve(objList);
@@ -51,6 +150,7 @@ export class CategoryService {
                 Name: row.name,
                 Color: row.color,
                 SystemDefault: row.system_default,
+                SubCategories: [],
               };
               resolve(obj);
             } else {
@@ -76,6 +176,7 @@ export class CategoryService {
                 Name: row.name,
                 Color: row.color,
                 SystemDefault: row.system_default,
+                SubCategories: [],
               };
               resolve(obj);
             } else {

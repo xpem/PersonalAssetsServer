@@ -15,10 +15,10 @@ export class SubCategoryController {
     const Id = req.params.id as string;
     var uid = Number(req.uid);
 
-console.log(Id)
-console.log(uid)
+    console.log(Id);
+    console.log(uid);
 
-    const item = await service.readById(Number(Id),uid);
+    const item = await service.readById(Number(Id), uid);
     return res.json(item);
   }
   async readByCategoryId(req: Request, res: Response) {
@@ -33,12 +33,12 @@ console.log(uid)
     else return res.status(204).json(null);
   }
   async create(req: Request, res: Response) {
-    const { Name, IconName, Category } = req.body;
+    const { Name, IconName, CategoryId } = req.body;
 
     const subCategory = {
       Name: Name ?? null,
       IconName: IconName ?? null,
-      Category: { Id: Category.Id ?? null },
+      CategoryId: CategoryId,
     } as ISubCategory;
 
     //default color
@@ -51,7 +51,7 @@ console.log(uid)
       var subCategoryByCategoryIdAndName =
         await service.readByCategoryIdAndName(
           subCategory.Uid,
-          Number(subCategory.Category.Id),
+          Number(subCategory.CategoryId),
           subCategory.Name
         );
 
@@ -93,15 +93,11 @@ console.log(uid)
     if (!_subCategory)
       return "Não existe sub categoria cadastrada para este usuário com este id";
 
-    console.log(_subCategory.Category.Id);
-
-    subCategory.Category = _subCategory.Category;
-    
-    console.log(subCategory);
+    subCategory.CategoryId = _subCategory.CategoryId;
 
     var subCategoryByName = await service.readByCategoryIdAndName(
       subCategory.Uid as number,
-      subCategory.Category.Id as number,
+      subCategory.CategoryId as number,
       subCategory.Name
     );
 
@@ -133,7 +129,7 @@ console.log(uid)
   }
   async ValidateParams(subCategory: ISubCategory) {
     if (!subCategory.Name) return false;
-    if (!subCategory.Category.Id) return false;
+    if (!subCategory.CategoryId) return false;
     return true;
   }
   async ValidateById(id: number, uid: number) {

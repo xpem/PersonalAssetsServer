@@ -11,9 +11,13 @@ export class CategoryController {
     return res.json(itemList);
   }
   async readById(req: Request, res: Response) {
+    
+    console.log("teste")
+
     if (!req.params.id) {
       throw new Error("Defina o id");
     }
+
 
     const id = req.params.id as string;
     const uid = Number(req.uid);
@@ -22,6 +26,17 @@ export class CategoryController {
 
     if (categoryResponse) return res.json(categoryResponse);
     else return res.status(409).json("Esta categoria não existe");
+  }
+  async readWithSubCategories(req: Request, res: Response) {
+
+    // const id = req.params.id as string;
+    const uid = Number(req.uid);
+    console.log("teste");
+    // console.log(uid);
+    const categoriesResponse = await service.readWithSubCategories(uid);
+
+    if (categoriesResponse) return res.json(categoriesResponse);
+    else return res.status(409).json("Sem informações");
   }
   async create(req: Request, res: Response) {
     const { Name, Color } = req.body;
@@ -101,7 +116,6 @@ export class CategoryController {
       return res.status(409).json("Campos name é obrigatório");
     }
   }
-
   async delete(req: Request, res: Response) {
     const id = req.params.id;
 
@@ -122,7 +136,6 @@ export class CategoryController {
       return res.status(409).json(errorMessage);
     }
   }
-
   async ValidateById(id: number, uid: number) {
     //verify if this category exists in user
     var category = await service.readById(id, uid);
@@ -153,7 +166,6 @@ export class CategoryController {
 
     return null;
   }
-
   async ValidateItem(category: ICategory) {
     if (!category.Name) {
       return false;

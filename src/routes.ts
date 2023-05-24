@@ -21,6 +21,7 @@ const router = Router();
 //   res.json((req as multipartyRequest).files.imga);
 // });
 
+
 //items
 var itemController = new ItemController();
 router.get("/item", Authenticate, itemController.readByUid);
@@ -32,7 +33,12 @@ router.delete("/item/:id", Authenticate, itemController.delete);
 //categories
 var categoryController = new CategoryController();
 router.get("/category", Authenticate, categoryController.read);
+
+//aviso: a ordem dos gets afeta a leitura das variaveis.
+router.get("/category/subcategories", Authenticate, categoryController.readWithSubCategories);
 router.get("/category/:id", Authenticate, categoryController.readById);
+//
+
 router.post("/category", Authenticate, categoryController.create);
 router.put("/category/:id", Authenticate, categoryController.update);
 router.delete("/category/:id", Authenticate, categoryController.delete);
@@ -40,12 +46,12 @@ router.delete("/category/:id", Authenticate, categoryController.delete);
 //sub categories
 var subCategoryController = new SubCategoryController();
 // router.get("/subcategory", Authenticate, subCategoryController.read);
-router.get("/subcategory/:id", Authenticate, subCategoryController.readById);
 router.get(
   "/subcategory/category/:id",
   Authenticate,
   subCategoryController.readByCategoryId
 );
+router.get("/subcategory/:id", Authenticate, subCategoryController.readById);
 router.post("/subcategory", Authenticate, subCategoryController.create);
 router.put("/subcategory/:id", Authenticate, subCategoryController.update);
 router.delete("/subcategory/:id", Authenticate, subCategoryController.delete);
