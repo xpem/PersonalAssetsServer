@@ -62,7 +62,7 @@ export class SubCategoryServive {
                 if (row) {
                   const obj: ISubCategory = {
                     Id: row.id,
-                    IconName: row.icon,
+                    IconName: row.icon_name,
                     Name: row.name,
                     SystemDefault: row.system_default,
                     CategoryId: row.category_id,
@@ -90,7 +90,7 @@ export class SubCategoryServive {
             if (row) {
               const obj: ISubCategory = {
                 Id: row.id,
-                IconName: row.icon,
+                IconName: row.icon_name,
                 Name: row.name,
                 SystemDefault: row.system_default,
                 CategoryId: row.category_id,
@@ -121,7 +121,7 @@ export class SubCategoryServive {
             if (row) {
               const obj: ISubCategory = {
                 Id: row.id,
-                IconName: row.icon,
+                IconName: row.icon_name,
                 Name: row.name,
                 SystemDefault: row.system_default,
                 CategoryId: row.category_id,
