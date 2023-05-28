@@ -1,7 +1,7 @@
 export interface IItemSituation {
     Id: number;
-    Uid?: number | null;
     Name: string;
+    Uid?: number | null;
     SystemDefault: number;
     Sequence: number;
   }

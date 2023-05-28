@@ -21,7 +21,6 @@ const router = Router();
 //   res.json((req as multipartyRequest).files.imga);
 // });
 
-
 //items
 var itemController = new ItemController();
 router.get("/item", Authenticate, itemController.readByUid);
@@ -35,7 +34,11 @@ var categoryController = new CategoryController();
 router.get("/category", Authenticate, categoryController.read);
 
 //aviso: a ordem dos gets afeta a leitura das variaveis.
-router.get("/category/subcategories", Authenticate, categoryController.readWithSubCategories);
+router.get(
+  "/category/subcategory",
+  Authenticate,
+  categoryController.readWithSubCategories
+);
 router.get("/category/:id", Authenticate, categoryController.readById);
 //
 
@@ -57,11 +60,15 @@ router.put("/subcategory/:id", Authenticate, subCategoryController.update);
 router.delete("/subcategory/:id", Authenticate, subCategoryController.delete);
 
 //item situation
-router.get("/itemsituation", Authenticate, new ItemSituationController().readAll);
+router.get(
+  "/itemsituation",
+  Authenticate,
+  new ItemSituationController().readAll
+);
 
 //acquisition types
 router.get(
-  "/acquisitiontypes",
+  "/acquisitiontype",
   Authenticate,
   new AcquisitionTypeController().readAll
 );

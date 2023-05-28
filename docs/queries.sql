@@ -61,14 +61,20 @@ insert into item_situation(name,sequence,system_default) values ('Revendido',4,1
 insert into item_situation(name,sequence,system_default) values ('Emprestado',6,1);
 insert into item_situation(name,sequence,system_default) values ('Doado',7,1);
 
-
 create table acquisition_type(
-id int primary key not null AUTO_INCREMENT, name varchar(50) not null);
+id int primary key not null AUTO_INCREMENT,
+name varchar(50) not null,
+sequence int unique not NULL,
+system_default tinyint(1) not NULL DEFAULT 0,
+uid varchar(250),
+created_at datetime(3) NOT NULL DEFAULT current_timestamp(3),
+updated_at datetime(3)
+);
 
-insert into acquisition_type(name) values ('Compra');
-insert into acquisition_type(name) values ('Emprestimo');
-insert into acquisition_type(name) values ('Doação');
-insert into acquisition_type(name) values ('Presente');
+insert into acquisition_type(name,sequence,system_default) values ('Compra',1,1);
+insert into acquisition_type(name,sequence,system_default) values ('Emprestimo',2,1);
+insert into acquisition_type(name,sequence,system_default) values ('Doação',3,1);
+insert into acquisition_type(name,sequence,system_default) values ('Presente',4,1);
 
 CREATE TABLE
   `item` (

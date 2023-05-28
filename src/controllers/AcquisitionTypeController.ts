@@ -3,7 +3,8 @@ import { Request, Response } from "express";
 
 export class AcquisitionTypeController {
   async readAll(req: Request, res: Response) {
-    const acquisitionTypeList = await (new AcquisitionTypeService()).readAll();
+    var uid = Number(req.uid);
+    const acquisitionTypeList = await new AcquisitionTypeService().readAll(uid);
     return res.json(acquisitionTypeList);
   }
 }
