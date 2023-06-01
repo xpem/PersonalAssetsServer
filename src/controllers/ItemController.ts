@@ -13,7 +13,7 @@ export class ItemController {
       PurchaseValue,
       PurchaseStore,
       ResaleValue,
-      Status,
+      Situation,
       Comment,
       AcquisitionType,
     } = req.body;
@@ -25,7 +25,7 @@ export class ItemController {
       PurchaseValue: PurchaseValue ?? null,
       PurchaseStore: PurchaseStore ?? null,
       ResaleValue: ResaleValue ?? null,
-      Status: Status ?? null,
+      Situation: Situation ?? null,
       Comment: Comment ?? null,
       AcquisitionType: AcquisitionType ?? null,
     } as IItem;
@@ -58,7 +58,7 @@ export class ItemController {
       PurchaseValue,
       PurchaseStore,
       ResaleValue,
-      Status,
+      Situation,
       Comment,
       AcquisitionType,
     } = req.body;
@@ -70,7 +70,7 @@ export class ItemController {
       PurchaseValue: PurchaseValue ?? null,
       PurchaseStore: PurchaseStore ?? null,
       ResaleValue: ResaleValue ?? null,
-      Status: Status ?? null,
+      Situation: Situation ?? null,
       Comment: Comment ?? null,
       AcquisitionType: AcquisitionType ?? null,
       Id: Number(id),
@@ -100,7 +100,7 @@ export class ItemController {
     const Uid = Number(req.uid);
 
     const itemService = new ItemService();
-    await itemService.delete(Number(id),Uid);
+    await itemService.delete(Number(id), Uid);
     return res.status(200);
   }
   async readById(req: Request, res: Response) {
@@ -112,7 +112,7 @@ export class ItemController {
     const uid = Number(req.uid);
 
     const itemService = new ItemService();
-    const itemResponse = await itemService.readById(Number(itemId),uid);
+    const itemResponse = await itemService.readById(Number(itemId), uid);
 
     if (itemResponse) {
       return res.json(itemResponse);
@@ -129,7 +129,7 @@ export class ItemController {
     } else {
       return res.status(409).json("Não existe Items para este usuário");
     }
-  }  
+  }
   async ValidateItem(Item: IItem) {
     if (!Item.Name) {
       return false;
@@ -138,9 +138,9 @@ export class ItemController {
       return false;
     }
 
-    if (!Item.Status) {
+    if (!Item.Situation) {
       const itemstatus = await new ItemSituationService().readById(
-        Number(Item.Status)
+        Number(Item.Situation)
       );
       if (!itemstatus) return false;
     }

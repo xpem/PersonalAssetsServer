@@ -7,7 +7,8 @@ export class ItemService {
   create(item: IItem): Promise<IItem> {
     return new Promise((resolve, reject) => {
       Conn.query<OkPacket>(
-        "insert into items(uid,name,technical_description,acquisition_date,purchase_value,purchase_store,resale_value,status_id,comment,acquisition_type_id)" +
+        "insert into item(uid,name,technical_description,acquisition_date,purchase_value,purchase_store," +
+          "resale_value,situation_id,comment,acquisition_type_id)" +
           " values (?,?,?,?,?,?,?,?,?,?)",
         [
           item.Uid,
@@ -17,7 +18,7 @@ export class ItemService {
           item.PurchaseValue,
           item.PurchaseStore,
           item.ResaleValue,
-          item.Status,
+          item.Situation,
           item.Comment,
           item.AcquisitionType,
         ],
@@ -34,7 +35,8 @@ export class ItemService {
   update(item: IItem): Promise<IItem> {
     return new Promise((resolve, reject) => {
       Conn.query<OkPacket>(
-        "update items set name = ?,technical_description = ?,acquisition_date = ?,purchase_value = ?,purchase_store = ?,resale_value = ?,status_id = ?,comment = ?,acquisition_type_id = ? where id = ? and uid = ?",
+        "update item set name = ?,technical_description = ?,acquisition_date = ?,purchase_value = ?," +
+          "purchase_store = ?,resale_value = ?,situation_id = ?,comment = ?,acquisition_type_id = ? where id = ? and uid = ?",
         [
           item.Name,
           item.TechnicalDescription,
@@ -42,7 +44,7 @@ export class ItemService {
           item.PurchaseValue,
           item.PurchaseStore,
           item.ResaleValue,
-          item.Status,
+          item.Situation,
           item.Comment,
           item.AcquisitionType,
           item.Id,
@@ -61,7 +63,7 @@ export class ItemService {
   delete(id: number, uid: number): Promise<void> {
     return new Promise((resolve, reject) => {
       Conn.query<OkPacket>(
-        "delete from items where id = ? and uid = ?",
+        "delete from item where id = ? and uid = ?",
         [id, uid],
         (err, res) => {
           if (err) reject(err);
@@ -73,7 +75,7 @@ export class ItemService {
     return new Promise((resolve, reject) => {
       Conn.query(
         "select id,name,technical_description,acquisition_date,purchase_value,purchase_store, " +
-          "resale_value,status_id,comment,created_at,updated_at,acquisition_type_id from items where id = ? and uid = ?",
+          "resale_value,situation_id,comment,created_at,updated_at,acquisition_type_id from item where id = ? and uid = ?",
         [itemId, uid],
         (err, res) => {
           if (err) reject(err);
@@ -92,9 +94,8 @@ export class ItemService {
                 CreatedAt: row.created_at,
                 UpdatedAt: row.updated_at,
                 Comment: row.comment,
-                Status: row.status_id,
+                Situation: row.situation_id,
               };
-              console.log(item);
               resolve(item);
             } else {
               resolve(undefined);
@@ -108,7 +109,7 @@ export class ItemService {
     return new Promise((resolve, reject) => {
       Conn.query(
         "select id,name,technical_description,acquisition_date,purchase_value,purchase_store, " +
-          "resale_value,status_id,comment,created_at,updated_at,acquisition_type_id from items where uid = ?",
+          "resale_value,situation_id,comment,created_at,updated_at,acquisition_type_id from item where uid = ?",
         [uid],
         (err, res) => {
           if (err) reject(err);
@@ -130,7 +131,7 @@ export class ItemService {
                   CreatedAt: row.created_at,
                   UpdatedAt: row.updated_at,
                   Comment: row.comment,
-                  Status: row.status_id,
+                  Situation: row.situation_id,
                 };
 
                 objlist.push(item);
