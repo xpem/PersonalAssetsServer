@@ -57,7 +57,22 @@ export class CategoryService {
                   var obj: ICategory;
                   console.log("counter " + counter);
 
-                  if (counter == 0) {
+                  if (
+                    counter > 0 &&
+                    objList.length > 0 &&
+                    row.sc_id &&
+                    objList[objList.length - 1].Id == row.c_id
+                  ) {
+                    if (row.sc_id) {
+                      objList[objList.length - 1].SubCategories?.push({
+                        Id: row.sc_id,
+                        IconName: row.sc_icon,
+                        Name: row.sc_name,
+                        SystemDefault: row.sc_system_default,
+                        CategoryId: row.c_id,
+                      });
+                    }
+                  } else {
                     obj = {
                       Id: row.c_id,
                       Name: row.c_name,
@@ -65,63 +80,25 @@ export class CategoryService {
                       SystemDefault: row.c_system_default,
                       SubCategories: [],
                     };
-                    objList.push(obj);
-                  } else {
-                    console.log("Obj");
-                    console.log(objList);
-                    if (
-                      counter > 0 &&
-                      objList.length > 0 &&
-                      row.sc_id &&
-                      objList[objList.length - 1].Id == row.c_id
-                    ) {
-                      if (row.sc_id) {
-                        console.log("vai add a subcategoria");
-                        objList[objList.length - 1].SubCategories?.push({
-                          Id: row.sc_id,
-                          IconName: row.sc_icon,
-                          Name: row.sc_name,
-                          SystemDefault: row.sc_system_default,
-                          CategoryId: row.c_id,
-                        });
-                      }
-                    } else {
-                      if (row.sc_id) {
-                        obj = {
-                          Id: row.c_id,
-                          Name: row.c_name,
-                          Color: row.c_color,
-                          SystemDefault: row.c_system_default,
-                          SubCategories: [],
-                        };
-                        objList.push(obj);
-                      } else {
-                        obj = {
-                          Id: row.c_id,
-                          Name: row.c_name,
-                          Color: row.c_color,
-                          SystemDefault: row.c_system_default,
-                          SubCategories: [],
-                        };
-                        if (row.sc_id) {
-                          obj.SubCategories?.push({
-                            Id: row.sc_id,
-                            IconName: row.sc_icon,
-                            Name: row.sc_name,
-                            SystemDefault: row.sc_system_default,
-                            CategoryId: row.c_id,
-                            // Category: {
-                            //   Id: row.c_id,
-                            //   Name: row.c_name,
-                            //   Color: row.c_color,
-                            //   SystemDefault: row.c_system_default,
-                            //   SubCategories: null,
-                            // },
-                          });
-                        }
-                        objList.push(obj);
-                      }
+
+                    if (row.sc_id) {
+                      obj.SubCategories?.push({
+                        Id: row.sc_id,
+                        IconName: row.sc_icon,
+                        Name: row.sc_name,
+                        SystemDefault: row.sc_system_default,
+                        CategoryId: row.c_id,
+                        // Category: {
+                        //   Id: row.c_id,
+                        //   Name: row.c_name,
+                        //   Color: row.c_color,
+                        //   SystemDefault: row.c_system_default,
+                        //   SubCategories: null,
+                        // },
+                      });
                     }
+
+                    objList.push(obj);
                   }
                   counter++;
                 }
