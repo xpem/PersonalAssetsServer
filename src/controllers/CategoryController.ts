@@ -31,7 +31,6 @@ export class CategoryController {
 
     // const id = req.params.id as string;
     const uid = Number(req.uid);
-    console.log("teste");
     // console.log(uid);
     const categoriesResponse = await service.readWithSubCategories(uid);
 
