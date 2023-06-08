@@ -7,7 +7,12 @@ export interface IItem {
   PurchaseValue?: number | null;
   PurchaseStore?: string | null;
   ResaleValue?: number | null;
-  Situation?: number;
+  Situation?: { Id: number; Name: string | null };
+  Category?: {
+    Id: number;
+    Name: string | null;
+    SubCategory?: { Id: number; Name: string | null } | null;
+  };
   Comment?: string | null;
   AcquisitionType: number;
   CreatedAt?: Date;

@@ -14,6 +14,7 @@ export class ItemController {
       PurchaseStore,
       ResaleValue,
       Situation,
+      Category,
       Comment,
       AcquisitionType,
     } = req.body;
@@ -25,10 +26,17 @@ export class ItemController {
       PurchaseValue: PurchaseValue ?? null,
       PurchaseStore: PurchaseStore ?? null,
       ResaleValue: ResaleValue ?? null,
-      Situation: Situation ?? null,
+      Situation: { Id: Situation.Id ?? null },
+      Category: { Id: Category.Id ?? null },
       Comment: Comment ?? null,
       AcquisitionType: AcquisitionType ?? null,
     } as IItem;
+
+    if (Category.SubCategory && item.Category)
+      item.Category.SubCategory = {
+        Id: Number(Category.SubCategory.Id),
+        Name: null,
+      };
 
     item.Uid = Number(req.uid);
 
@@ -59,6 +67,7 @@ export class ItemController {
       PurchaseStore,
       ResaleValue,
       Situation,
+      Category,
       Comment,
       AcquisitionType,
     } = req.body;
@@ -70,11 +79,18 @@ export class ItemController {
       PurchaseValue: PurchaseValue ?? null,
       PurchaseStore: PurchaseStore ?? null,
       ResaleValue: ResaleValue ?? null,
-      Situation: Situation ?? null,
+      Situation: { Id: Situation.Id ?? null },
+      Category: { Id: Category.Id ?? null },
       Comment: Comment ?? null,
       AcquisitionType: AcquisitionType ?? null,
       Id: Number(id),
     } as IItem;
+
+    if (Category.SubCategory && item.Category)
+      item.Category.SubCategory = {
+        Id: Number(Category.SubCategory.Id),
+        Name: null,
+      };
 
     item.Uid = Number(req.uid);
 
@@ -101,7 +117,8 @@ export class ItemController {
 
     const itemService = new ItemService();
     await itemService.delete(Number(id), Uid);
-    return res.status(200);
+
+    return res.status(200).json("Item excluído!");
   }
   async readById(req: Request, res: Response) {
     if (!req.params.id) {
@@ -148,6 +165,8 @@ export class ItemController {
       const acquisitionType = await new AcquisitionTypeService().readById(
         Number(Item.AcquisitionType)
       );
+
+      if (!Item.Category?.Id) return false;
 
       if (!acquisitionType) return false;
     }

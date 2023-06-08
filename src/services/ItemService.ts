@@ -8,8 +8,8 @@ export class ItemService {
     return new Promise((resolve, reject) => {
       Conn.query<OkPacket>(
         "insert into item(uid,name,technical_description,acquisition_date,purchase_value,purchase_store," +
-          "resale_value,situation_id,comment,acquisition_type_id)" +
-          " values (?,?,?,?,?,?,?,?,?,?)",
+          "resale_value,situation_id,category_id,subcategory_id,comment,acquisition_type_id)" +
+          " values (?,?,?,?,?,?,?,?,?,?,?,?)",
         [
           item.Uid,
           item.Name,
@@ -18,7 +18,9 @@ export class ItemService {
           item.PurchaseValue,
           item.PurchaseStore,
           item.ResaleValue,
-          item.Situation,
+          item.Situation?.Id,
+          item.Category?.Id,
+          item.Category?.SubCategory?.Id,
           item.Comment,
           item.AcquisitionType,
         ],
@@ -36,7 +38,7 @@ export class ItemService {
     return new Promise((resolve, reject) => {
       Conn.query<OkPacket>(
         "update item set name = ?,technical_description = ?,acquisition_date = ?,purchase_value = ?," +
-          "purchase_store = ?,resale_value = ?,situation_id = ?,comment = ?,acquisition_type_id = ? where id = ? and uid = ?",
+          "purchase_store = ?,resale_value = ?,situation_id = ?, category_id = ?,subcategory_id = ?,comment = ?,acquisition_type_id = ? where id = ? and uid = ?",
         [
           item.Name,
           item.TechnicalDescription,
@@ -44,7 +46,9 @@ export class ItemService {
           item.PurchaseValue,
           item.PurchaseStore,
           item.ResaleValue,
-          item.Situation,
+          item.Situation?.Id,
+          item.Category?.Id,
+          item.Category?.SubCategory?.Id,
           item.Comment,
           item.AcquisitionType,
           item.Id,
@@ -74,8 +78,10 @@ export class ItemService {
   readById(itemId: number, uid: number): Promise<IItem | undefined> {
     return new Promise((resolve, reject) => {
       Conn.query(
-        "select id,name,technical_description,acquisition_date,purchase_value,purchase_store, " +
-          "resale_value,situation_id,comment,created_at,updated_at,acquisition_type_id from item where id = ? and uid = ?",
+        "select i.id,i.name as item_name,i.technical_description,i.acquisition_date,i.purchase_value,i.purchase_store," +
+          "i.resale_value,i.situation_id,i.category_id,c.name as category_name,i.subcategory_id,s.name as subcategory_name,i.comment,i.created_at,i.updated_at,i.acquisition_type_id" +
+          " from item i left join category c on i.category_id = c.id left join sub_category s on i.subcategory_id = s.id" +
+          " where i.id = ? and i.uid = ?",
         [itemId, uid],
         (err, res) => {
           if (err) reject(err);
@@ -84,7 +90,7 @@ export class ItemService {
             if (row) {
               const item: IItem = {
                 Id: row.id,
-                Name: row.name,
+                Name: row.item_name,
                 TechnicalDescription: row.technical_description,
                 AcquisitionDate: row.acquisition_date,
                 AcquisitionType: row.acquisition_type_id,
@@ -95,7 +101,19 @@ export class ItemService {
                 UpdatedAt: row.updated_at,
                 Comment: row.comment,
                 Situation: row.situation_id,
+                Category: {
+                  Id: row.category_id,
+                  Name: row.category_name,
+                  SubCategory: null,
+                },
               };
+
+              if (row.subcategory_id && item.Category)
+                item.Category.SubCategory = {
+                  Id: row.subcategory_id,
+                  Name: row.subcategory_name,
+                };
+
               resolve(item);
             } else {
               resolve(undefined);
@@ -108,8 +126,10 @@ export class ItemService {
   readByUid(uid: number): Promise<IItem[] | undefined> {
     return new Promise((resolve, reject) => {
       Conn.query(
-        "select id,name,technical_description,acquisition_date,purchase_value,purchase_store, " +
-          "resale_value,situation_id,comment,created_at,updated_at,acquisition_type_id from item where uid = ?",
+        "select i.id,i.name as item_name,i.technical_description,i.acquisition_date,i.purchase_value,i.purchase_store," +
+          "i.resale_value,i.situation_id,i.category_id,c.name as category_name,i.subcategory_id,s.name as subcategory_name,i.comment,i.created_at,i.updated_at,i.acquisition_type_id" +
+          " from item i left join category c on i.category_id = c.id left join sub_category s on i.subcategory_id = s.id" +
+          " where i.uid = ?",
         [uid],
         (err, res) => {
           if (err) reject(err);
@@ -132,7 +152,18 @@ export class ItemService {
                   UpdatedAt: row.updated_at,
                   Comment: row.comment,
                   Situation: row.situation_id,
+                  Category: {
+                    Id: row.category_id,
+                    Name: row.category_name,
+                    SubCategory: null,
+                  },
                 };
+
+                if (row.subcategory_id && item.Category)
+                  item.Category.SubCategory = {
+                    Id: row.subcategory_id,
+                    Name: row.subcategory_name,
+                  };
 
                 objlist.push(item);
               }

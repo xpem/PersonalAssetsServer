@@ -18,7 +18,6 @@ insert into category(name,color, system_default,uid) values ('Casa','#bfc9ca',0,
 
 --2 subcategory
 
-
 create table sub_category(
 id int primary key not null AUTO_INCREMENT,
 name varchar(50) not null,
@@ -48,18 +47,19 @@ id int primary key not null AUTO_INCREMENT,
 name varchar(50) not null,
 sequence int unique not NULL,
 system_default tinyint(1) not NULL DEFAULT 0,
+hand tinyint(1) not NULL,
 uid varchar(250),
 created_at datetime(3) NOT NULL DEFAULT current_timestamp(3),
 updated_at datetime(3)
 );
 
-insert into item_situation(name,sequence,system_default) values ('Em uso',1,1);
-insert into item_situation(name,sequence,system_default) values ('Guardado',2,1);
-insert into item_situation(name,sequence,system_default) values ('Dispensado',5,1);
-insert into item_situation(name,sequence,system_default) values ('Defeito',3,1);
-insert into item_situation(name,sequence,system_default) values ('Revendido',4,1);
-insert into item_situation(name,sequence,system_default) values ('Emprestado',6,1);
-insert into item_situation(name,sequence,system_default) values ('Doado',7,1);
+insert into item_situation(name,sequence,system_default) values ('Em uso',1,1,1);
+insert into item_situation(name,sequence,system_default) values ('Guardado',2,1,1);
+insert into item_situation(name,sequence,system_default) values ('Dispensado',5,1,0);
+insert into item_situation(name,sequence,system_default) values ('Defeito',3,1,0);
+insert into item_situation(name,sequence,system_default) values ('Revendido',4,1,0);
+insert into item_situation(name,sequence,system_default) values ('Emprestado',6,1,0);
+insert into item_situation(name,sequence,system_default) values ('Doado',7,1,0);
 
 create table acquisition_type(
 id int primary key not null AUTO_INCREMENT,
@@ -87,6 +87,8 @@ CREATE TABLE
     `purchase_store` varchar(200) DEFAULT NULL,
     `resale_value` decimal(10, 2) DEFAULT NULL,
     `situation_id` int(11) NOT NULL,
+    `category_id` int(11) NOT NULL,
+    `subcategory_id` int(11) DEFAULT NULL,
     `comment` varchar(350) DEFAULT NULL,
     `Image_1` varchar(500) DEFAULT NULL,
     `Image_2` varchar(500) DEFAULT NULL,
@@ -96,7 +98,9 @@ CREATE TABLE
     `acquisition_type_id` int(11) NOT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `FK_items_item_situation` FOREIGN KEY (`situation_id`) REFERENCES `item_situation` (`id`),
-    CONSTRAINT `FK_items_acquisition_type` FOREIGN KEY (`acquisition_type_id`) REFERENCES `acquisition_type` (`id`)
+    CONSTRAINT `FK_items_acquisition_type` FOREIGN KEY (`acquisition_type_id`) REFERENCES `acquisition_type` (`id`),
+    CONSTRAINT `FK_items_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`),
+    CONSTRAINT `FK_items_subcategory` FOREIGN KEY (`subcategory_id`) REFERENCES `sub_category` (`id`)
   ) ENGINE = InnoDB AUTO_INCREMENT = 2 DEFAULT CHARSET = latin1
 
 
