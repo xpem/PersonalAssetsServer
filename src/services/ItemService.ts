@@ -141,7 +141,7 @@ export class ItemService {
               if (row) {
                 const item: IItem = {
                   Id: row.id,
-                  Name: row.name,
+                  Name: row.item_name,
                   TechnicalDescription: row.technical_description,
                   AcquisitionDate: row.acquisition_date,
                   AcquisitionType: row.acquisition_type_id,
