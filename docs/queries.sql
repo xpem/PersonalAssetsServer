@@ -11,7 +11,7 @@ updated_at datetime(3),
 );
 
 insert into category(name,color, system_default) values ('Casa','#bfc9ca',1)
-insert into category(name,color, system_default) values ('Vestimenta','#f5cba7 ',1)
+insert into category(name,color, system_default) values ('Vestimenta','#f5cba7',1)
 insert into category(name,color, system_default) values ('Carro','#f5b7b1',1)
 
 insert into category(name,color, system_default,uid) values ('Casa','#bfc9ca',0,'')

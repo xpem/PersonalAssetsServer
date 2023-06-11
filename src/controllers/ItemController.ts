@@ -36,6 +36,7 @@ export class ItemController {
       item.Category.SubCategory = {
         Id: Number(Category.SubCategory.Id),
         Name: null,
+        IconName: null,
       };
 
     item.Uid = Number(req.uid);
@@ -90,6 +91,7 @@ export class ItemController {
       item.Category.SubCategory = {
         Id: Number(Category.SubCategory.Id),
         Name: null,
+        IconName: null,
       };
 
     item.Uid = Number(req.uid);

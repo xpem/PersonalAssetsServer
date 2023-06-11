@@ -11,7 +11,12 @@ export interface IItem {
   Category?: {
     Id: number;
     Name: string | null;
-    SubCategory?: { Id: number; Name: string | null } | null;
+    Color: string | null;
+    SubCategory?: {
+      Id: number;
+      Name: string | null;
+      IconName: string | null;
+    } | null;
   };
   Comment?: string | null;
   AcquisitionType: number;
